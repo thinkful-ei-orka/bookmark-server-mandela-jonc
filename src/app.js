@@ -13,7 +13,7 @@ const morganOption = NODE_ENV === 'production';
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
-  transports: [new winston.transports.File({ filename: info.log })],
+  transports: [new winston.transports.File({ filename: 'info.log' })],
 });
 
 if (NODE_ENV !== 'production') {
@@ -25,13 +25,6 @@ if (NODE_ENV !== 'production') {
 }
 
 const bookmarks = [
-  {
-    id,
-    title,
-    url,
-    rating,
-    desc,
-  },
   {
     id: 1,
     title: 'test bookmark',
@@ -49,6 +42,7 @@ app.use(function validateBearerToken(req, res, next) {
   const authToken = req.get('Authorization');
 
   if (!authToken || authToken.split(' ') !== apiToken) {
+    logger.error(`Unauthroized request to path: ${req.path}`);
     return res.status(401).json({ error: 'Unathorized request' });
   }
   next();
