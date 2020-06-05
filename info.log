@@ -12,3 +12,7 @@
 {"message":"Bookmark with 022c974b-1899-46fa-9f3b-ee9d00add207 created","level":"info"}
 {"message":"Bookmark with cdb6a379-0c48-4a58-907e-3c1ae44e03ac created","level":"info"}
 {"message":"Bookmark with 22b54e91-e30b-4e9d-b99b-afabcafd3384 created","level":"info"}
+{"message":"Bookmark with f9dd2edd-a23b-4501-9dd7-ea68400a1144 created","level":"info"}
+{"message":"Bookmark with id f9dd2edd-a23b-4501-9dd7-ea68400a114 not found.","level":"error"}
+{"message":"Bookmark with 2213a65b-ff1d-47d9-bf3d-c9c4dcdbdd70 created","level":"info"}
+{"message":"Bookmark with id 2213a65b-ff1d-47d9-bf3d-c9c4dcdbdd70 deleted.","level":"info"}

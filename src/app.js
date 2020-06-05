@@ -41,9 +41,11 @@ app.use(function validateBearerToken(req, res, next) {
   const apiToken = process.env.API_TOKEN;
   const authToken = req.get('Authorization');
 
-  // console.log(apiToken, authToken);
+  console.log(apiToken, authToken);
   if (!authToken || authToken.split(' ')[1] !== apiToken) {
-    return res.status(401).json({ error: `Unathorized request ${apiToken, authToken}` });
+    return res.status(401).json({
+      error: `Unathorized request ${(apiToken, authToken.split(' ')[1])}`,
+    });
   }
   next();
 });
@@ -56,91 +58,74 @@ app.get('/', (req, res) => {
 });
 
 app.get('/bookmarks', (req, res) => {
-  res
-    .json(bookmarks);
+  res.json(bookmarks);
 });
 
 app.get('/bookmarks/:id', (req, res) => {
-    const { id } = req.params;
-    const bookmark = bookmarks.find(c => c.id ==id);
+  const { id } = req.params;
+  const bookmark = bookmarks.find((c) => c.id == id);
 
-    if (!bookmark) {
-      logger.error(`Bookmark with id ${id} not found`);
-      return res
-        .status(404)
-        .send('Bookmark Not Found');
-    }
+  if (!bookmark) {
+    logger.error(`Bookmark with id ${id} not found`);
+    return res.status(404).send('Bookmark Not Found');
+  }
 
-    res.json(bookmark);
+  res.json(bookmark);
 });
 
 app.post('/bookmarks', (req, res) => {
-    console.log(req.body);
-    const { title, url, rating, desc} = req.body;
+  console.log(req.body);
+  const { title, url, rating, desc } = req.body;
 
-    if (!title) {
-      logger.error('Title is required');
-      return res
-        .status(400)
-        .send('Invalid data');
-    }
+  if (!title) {
+    logger.error('Title is required');
+    return res.status(400).send('Invalid data');
+  }
 
-    if (!url) {
-      logger.error('URL is required');
-      return res
-        .status(400)
-        .send('Invalid data');
-    }
+  if (!url) {
+    logger.error('URL is required');
+    return res.status(400).send('Invalid data');
+  }
 
-    if (!rating) {
-      logger.error('rating is required');
-        return res
-          .status(400)
-          .send('Invalid data');
-    }
+  if (!rating) {
+    logger.error('rating is required');
+    return res.status(400).send('Invalid data');
+  }
 
-    const id = uuid();
+  const id = uuid();
 
-    const bookmark = {
-      id,
-      title,
-      url,
-      rating,
-      desc
-    };
+  const bookmark = {
+    id,
+    title,
+    url,
+    rating,
+    desc,
+  };
 
-    bookmarks.push(bookmark);
+  bookmarks.push(bookmark);
 
-    logger.info(`Bookmark with ${id} created`);
+  logger.info(`Bookmark with ${id} created`);
 
-    res
-      .status(201)
-      .location(`:http://localhost:8000/bookmarks/${id}`)
-      .json(bookmark);
-
-    });
+  res
+    .status(201)
+    .location(`:http://localhost:8000/bookmarks/${id}`)
+    .json(bookmark);
+});
 
 app.delete('/bookmarks/:id', (req, res) => {
   const { id } = req.params;
   console.log(req.params);
 
-  const bookmarkIndex = bookmarks.findIndex(c => c.id == id);
-
+  const bookmarkIndex = bookmarks.findIndex((c) => c.id == id);
+  bookmarks.splice(bookmarkIndex, 1);
   if (bookmarkIndex === -1) {
     logger.error(`Bookmark with id ${id} not found.`);
-    return res
-      .status(204)
-      .send('No content');
+    return res.status(204).send('No content');
   }
-
-  bookmarks.splice(bookmarkIndex, 1);
 
   logger.info(`Bookmark with id ${id} deleted.`);
 
-  res
-    .status(204)
-    .end();
-   
+  res.status(204).end();
 });
 
 app.use(function errorHandler(error, req, res, next) {
